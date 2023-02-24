@@ -59,7 +59,7 @@ def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, cent
     rad/=np.sqrt((rad**2).sum())
     phase = 2*np.pi*np.random.random(k.shape)
 
-    phaseneg = phase[[slice(None,None,-1)]*E]
+    phaseneg = phase[tuple([slice(None,None,-1)]*E)]
     phase -= phaseneg
 
     A = rad*np.cos(phase)+rad*np.sin(phase)*1j 
@@ -69,10 +69,10 @@ def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, cent
         i_plus[i]=-1
         i_minus=[slice(None)]*E
         i_minus[i]=0
-        A[i_minus] += A[i_plus]
+        A[tuple(i_minus)] += A[tuple(i_plus)]
         indices=[slice(None)]*E
         indices[i]=slice(None,-1)
-        A = A[indices]
+        A = A[tuple(indices)]
     
     offset = np.asarray(A.shape)/2
     offset = offset.astype(int)
@@ -104,7 +104,6 @@ def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, cent
     	X = COM(X)
     
     return X
-
 
 ###############################################################################
 
