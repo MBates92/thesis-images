@@ -5,7 +5,7 @@ import numpy as np
 '''Functions'''
 ###############################################################################
 
-def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, centred = True):
+def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, centred = True, periodic = False):
     
     """
     Function that returns an E-D Fractal Surface given the edge length in
@@ -35,6 +35,9 @@ def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, cent
     
     """
     
+    if periodic==False:
+        N=N*4
+
     a = axis
     
     beta = E+2*H
@@ -102,6 +105,9 @@ def fBm(N, E, H, sigma=1., seed=None, projected = None, axis = 0, exp=True, cent
     
     if centred:    
     	X = COM(X)
+
+    if periodic == False:
+        X = crop_center(X, N//4, N//4)
     
     return X
 
@@ -131,3 +137,10 @@ def COM(X):
     return X
 
 ###############################################################################
+
+
+def crop_center(img,cropx,cropy):
+    y,x = img.shape
+    startx = x//2 - cropx//2
+    starty = y//2 - cropy//2    
+    return img[starty:starty+cropy, startx:startx+cropx]
